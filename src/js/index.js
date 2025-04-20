@@ -106,14 +106,21 @@ const fileNameMP4 = `AcilDownloader_${createTime}.mp4`;
 }
 
 async function downloadMP3(url, createTime) {
-    const fileNameMP3 = `AcilMusicDL_${createTime}.mp3`;
+const fileNameMP3 = `AcilMusicDL_${createTime}.mp3`;
 
+  try {
     const res = await fetch(url);
     const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);;
+    a.href = blobUrl;
     a.download = `${fileNameMP3}`;
-    document.body.appendChild(m);
+    document.body.appendChild(a);
     a.click();
-    document.body.removeChild(m);
+    document.body.removeChild(a);
+    URL.revokeObjectURL(blobUrl);
+  } catch (err) {
+    console.error('Gagal download:', err);
+  }
 }
