@@ -7,6 +7,9 @@ async function downloadVideo() {
         const data = await res.json();
         if (data.code === 0) {
             const createTime = data.data.create_time;
+            const videoUrl = data.data.play;
+            console.log(data)
+            const audioUrl = data.data.music;
             document.getElementById("result").innerHTML = `
         <div role="alert" class="rounded-md border border-gray-300 bg-white p-4 shadow-sm dark:border-gray-600 dark:bg-gray-800">
         <div class="flex items-start gap-4">
@@ -50,15 +53,26 @@ async function downloadVideo() {
         <video src="${data.data.play}" controls class="h-64 w-full object-cover sm:h-80 lg:h-96">
         </div>
         </video><br>
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-5 justify-center">
         <img alt="avatar" src="${data.data.author.avatar}"
-        class="size-16 rounded-full object-cover"/>
-        <h3 class="text-lg font-medium text-white">${data.data.author.nickname}</h3>
-        <button class="group relative inline-block overflow-hidden border border-indigo-600 px-8 py-3 focus:ring-3 focus:outline-hidden bg-white" onclick="downloadDirect('${data.data.play}','${createTime}')">
+        class="size-14 rounded-full object-cover"/>
+        <h3 class="text-sm font-medium text-white">${data.data.author.nickname}</h3>
+        <h3 class="text-xs text-white text-right">${data.data.music_info.title}</h3>
+        <img alt="avatar" src="${data.data.music_info.cover}"
+        class="size-14 rounded-full object-cover"/>
+        </div>
+        <div class="flex items-center gap-5 mt-5 justify-center">
+        <button class="group relative inline-block overflow-hidden border border-indigo-600 px-8 py-3 focus:ring-3 focus:outline-hidden bg-white rounded" onclick="downloadMP4('${videoUrl}', '${createTime}')">
         <span class="absolute inset-y-0 left-0 w-[2px] bg-indigo-600 transition-all group-hover:w-full"></span>
-        <span class="relative text-sm font-medium text-indigo-600 transition-colors group-hover:text-white">
-        Download</span>
+        <span class="relative text-xs font-medium text-indigo-600 transition-colors group-hover:text-white">
+        Download MP4</span>
         </button>
+        <button class="group relative inline-block overflow-hidden border border-indigo-600 px-8 py-3 focus:ring-3 focus:outline-hidden bg-white rounded" onclick="downloadMP3('${audioUrl}', '${createTime}')">
+        <span class="absolute inset-y-0 left-0 w-[2px] bg-indigo-600 transition-all group-hover:w-full"></span>
+        <span class="relative text-xs font-medium text-indigo-600 transition-colors group-hover:text-white">
+        Download MP3</span></button>
+        </div>
+        <div class="flex items-center gap-4 mt-5">
         </div>
         <ul class="mt-4 space-y-2">
             <li>
@@ -70,25 +84,36 @@ async function downloadVideo() {
         </ul>
         </article>
         `;
-            console.log(data)
         } else {
             document.getElementById("result").innerText = "❌ Gagal mengambil video!";
         }
-
     } catch (err) {
         console.error(err);
         document.getElementById("result").innerText = "❌ Error saat mengambil data.";
     }
 }
-async function downloadDirect(url,createTime){
-const fileName = `AcilDownloader ${createTime}.mp4`;
+async function downloadMP4(url, createTime){
+const fileNameMP4 = `AcilDownloader_${createTime}.mp4`;
 
   const res = await fetch(url);
   const blob = await res.blob();
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download =`${fileName}`;
+  a.download =`${fileNameMP4}`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
+}
+
+async function downloadMP3(url, createTime) {
+    const fileNameMP3 = `AcilMusicDL_${createTime}.mp3`;
+
+    const res = await fetch(url);
+    const blob = await res.blob();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);;
+    a.download = `${fileNameMP3}`;
+    document.body.appendChild(m);
+    a.click();
+    document.body.removeChild(m);
 }
