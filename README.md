@@ -1,5 +1,5 @@
 <div align="center">
-<h1>Website TikTok Downloader HTML, JavaScript dan <a href="https://tailwindcss.com/">Bootstrap</a></h2><br></h1>
+<h1>Website TikTok Downloader HTML, JavaScript dan <a href="https://tailwindcss.com/">TailwindCSS</a></h2><br></h1>
 <p>Demo Website</p>
 <img src="https://raw.githubusercontent.com/nazrilacil/tiktokDownloader/refs/heads/main/src/png/preview.png"/>
   <br>
